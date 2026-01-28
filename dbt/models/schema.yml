@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: stg_weather_current
+    description: "Current weather data staging view"
+    columns:
+      - name: city
+        description: "City name"
+        tests:
+          - not_null
+          - unique
+      - name: temperature
+        description: "Temperature in Celsius"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['> -50', '< 50']
+      - name: humidity
+        description: "Humidity percentage"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['>= 0', '<= 100']
+
+sources:
+  - name: weather_db
+    database: weather_db
+    schema: raw
+    tables:
+      - name: raw_weather
+        description: "Raw weather data from API"
